@@ -13,14 +13,13 @@ import (
 //go:embed named.root
 var root string
 
-
-func (br *BottinResolver)initRoot() {
+func (br *BottinResolver) initRoot() {
 	zp := dns.NewZoneParser(strings.NewReader(root), "", "")
 
 	for drr, ok := zp.Next(); ok; drr, ok = zp.Next() {
 		rr, ok := convertRR(drr, false)
 		if ok {
-			br.cache.Set(rr.Key(), []RR{rr}, 99)
+			br.cache.Set(rr.Key(), []RR{rr})
 		}
 	}
 
