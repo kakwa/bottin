@@ -127,7 +127,7 @@ func (br *BottinResolver) exchange(ctx context.Context, qname, qtype string, nsR
 		nsAddr := nsRR.Value // Assume `nsRR.Value` contains the IP address of the nameserver
 
 		// Send the query to the nameserver
-		fmt.Printf(">>>> trying: %s\n", nsAddr)
+		fmt.Printf(">>>> trying: %s + %#v\n", msg, nsAddr)
 		resp, _, err := client.ExchangeContext(ctx, msg, nsAddr+":53")
 		if err != nil {
 			fmt.Printf("%#v\n", err)
@@ -140,6 +140,7 @@ func (br *BottinResolver) exchange(ctx context.Context, qname, qtype string, nsR
 			results.AnswerRRs = append(results.AnswerRRs, crr)
 		}
 		if len(results.AnswerRRs) > 0 {
+			fmt.Printf(">>>>>> %#v\n", results)
 			return results, nil // Return if we got a successful response
 		}
 	}
