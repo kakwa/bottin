@@ -19,7 +19,8 @@ func (br *BottinResolver) initRoot() {
 	for drr, ok := zp.Next(); ok; drr, ok = zp.Next() {
 		rr, ok := convertRR(drr, false)
 		if ok {
-			br.cache.Set(rr.Key(), []RR{rr})
+			oldRRs, _ := br.root.Get(rr.Key())
+			br.root.Set(rr.Key(), append(oldRRs, rr))
 		}
 	}
 
