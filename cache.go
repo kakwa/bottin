@@ -25,7 +25,12 @@ func NewCache() *Cache {
 func (c *Cache) Set(key string, rrs []RR) {
 	now := time.Now()
 	for i := range rrs {
-		rrs[i].Expiry = now.Add(rrs[i].TTL)
+		if rrs[i].TTL == 0 {
+			rrs[i].TTL = time.Second * 86400 * 365 * 100
+			rrs[i].Expiry = now.Add(time.Second * 86400 * 365 * 100)
+		} else {
+			rrs[i].Expiry = now.Add(rrs[i].TTL)
+		}
 	}
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
